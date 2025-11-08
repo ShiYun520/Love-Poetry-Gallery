@@ -393,7 +393,7 @@
                                         <path fill="currentColor" d="M904 224 656.512 506.88a192 192 0 0 1-289.024 0L120 224zm-698.944 0 210.56 240.704a128 128 0 0 0 192.704 0L818.944 224H205.056"></path>
                                     </svg>
                                 </i>
-                                <span>邮箱：1700022200@qq.com</span>
+                                <span>邮箱：</span>
                             </div>
                             <div class="contact-item">
                                 <i class="el-icon">
@@ -402,7 +402,7 @@
                                         <path fill="currentColor" d="M352 576h320q32 0 32 32t-32 32H352q-32 0-32-32t32-32m32-192h256q32 0 32 32t-32 32H384q-32 0-32-32t32-32"></path>
                                     </svg>
                                 </i>
-                                <span>社交媒体：微信公众号【惜缘梦岛】</span>
+                                <span>社交媒体：</span>
                             </div>
                         </div>
                     </div>
