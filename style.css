@@ -1,0 +1,815 @@
+/* ==================================== */
+/*          CSS变量定义                 */
+/* ==================================== */
+:root {
+    --color-primary: #8a65cc; /* 定义主色，一个紫色调 */
+    --color-primary-rgb: 138, 101, 204; /* 定义主色的RGB值，用于rgba() */
+}
+
+/* 默认body的背景色是深色 */
+body {
+    background-color: #2c2f3a; /* 主体背景色 */
+    color: #fff;
+    font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0; 
+    /* 为固定导航栏留出空间 */
+    padding-top: 60px; /* 导航栏高度为60px */
+}
+
+/* ==================================== */
+/*          通用样式和重置             */
+/* ==================================== */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ==================================== */
+/*            Artistic Title (导航栏标题)  */
+/* ==================================== */
+.artistic-title {
+    font-family: Palatino Linotype, Book Antiqua, Palatino, serif;
+    position: relative;
+    display: inline-block;
+    color: var(--color-primary); /* Fallback color for browsers that don't support background-clip: text */
+    letter-spacing: 1px;
+    text-shadow: 0px 2px 3px rgba(var(--color-primary-rgb), .2);
+    background: linear-gradient(135deg, var(--color-primary) 0%, #8a65cc 100%); /* 默认渐变 */
+    -webkit-background-clip: text; /* Clip background to text shape */
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Make text transparent to show background */
+    transition: all .3s ease; /* Smooth transition for hover or dark mode */
+    padding: 0 6px; /* Horizontal padding */
+    font-size: 20px;
+    font-weight: normal;
+}
+
+/* 深色模式下的样式覆盖 */
+html.dark .artistic-title {
+    background: linear-gradient(135deg, var(--color-primary) 0%, #c0a9f0 100%);
+    -webkit-background-clip: text;
+    text-shadow: 0px 2px 4px rgba(138, 101, 204, .3);
+}
+
+/* ==================================== */
+/*              导航栏样式              */
+/* ==================================== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #24262c; /* 导航栏背景色 (不透明) */
+    height: 60px;
+    padding: 0 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0; /* 防止导航栏被压缩 */
+    /* 添加固定定位 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* 确保在最顶层 */
+    /* 新增：过渡效果，用于透明度变化 */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 新增：下滑时导航栏的透明效果 */
+.navbar.scrolled {
+    background-color: rgba(36, 38, 44, 0.7); /* 半透明背景 */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* 更轻的阴影 */
+}
+
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.logo-icon {
+    width: 25px; /* 调整Logo大小 */
+    height: 25px;
+    margin-right: 10px;
+    border-radius: 5px; /* 模拟Logo图片的圆角 */
+}
+
+.navbar-nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar-nav li {
+    margin-left: 35px; /* 调整菜单项间距 */
+}
+
+.navbar-nav a {
+    text-decoration: none;
+    color: #b0b3b8; /* 导航链接颜色 */
+    font-size: 15px;
+    transition: color 0.3s ease; /* 保留文字颜色过渡 */
+    display: flex;
+    align-items: center;
+    /* 新增：为下划线伪元素定位 */
+    position: relative; 
+    padding-bottom: 5px; /* 增加底部内边距，为下划线留出空间 */
+}
+
+.navbar-nav a:hover {
+    color: #fff;
+}
+
+/* 新增：导航链接的紫色下划线效果 */
+.navbar-nav a::after {
+    content: ''; /* 伪元素必须有 content 属性 */
+    position: absolute;
+    bottom: 0; /* 位于链接底部 */
+    left: 0;
+    width: 100%; /* 宽度与链接相同 */
+    height: 2px; /* 下划线粗细 */
+    background-color: var(--color-primary); /* 紫色 */
+    transform: scaleX(0); /* 初始状态：宽度为0，从左边开始缩放 */
+    transform-origin: left; /* 缩放的原点在左侧 */
+    transition: transform 0.3s ease-out; /* 动画过渡效果 */
+}
+
+.navbar-nav a:hover::after {
+    transform: scaleX(1); /* 鼠标悬停时，宽度缩放至100% */
+}
+
+.navbar-nav i {
+    margin-right: 8px; /* 图标与文字间距 */
+    font-size: 16px;
+}
+
+.navbar-right-icon {
+    font-size: 20px;
+    color: #b0b3b8;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.navbar-right-icon:hover {
+    color: #fff;
+}
+
+/* ==================================== */
+/*           主内容区样式               */
+/* ==================================== */
+.content-wrapper {
+    flex-grow: 1; /* 让内容区填充剩余空间 */
+    display: flex;
+    flex-direction: column; /* 允许内部元素垂直排列 */
+    align-items: center; /* 保持内容居中 */
+    padding: 30px; /* 卡片与边框的距离 */
+}
+
+.wallpaper-card {
+    position: relative;
+    width: 90%; /* 卡片宽度 */
+    max-width: 1400px; /* 最大宽度 */
+    aspect-ratio: 16 / 9; /* 保持16:9的宽高比 */
+    border-radius: 20px; /* 大圆角 */
+    overflow: hidden; /* 隐藏超出卡片的内容 */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); /* 阴影效果 */
+    background-image: url('https://zyj.torgw.com/view.php/a903539d9e8c4c770c17edd6bf6a3580.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px; /* 与下方新增画廊的间距 */
+    /* 移除这里的 opacity 和 transition，让背景图始终可见 */
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.25); /* 半透明黑色叠加层 */
+    z-index: 1;
+}
+
+.text-content {
+    position: relative; /* 相对于父元素定位 */
+    z-index: 2; /* 确保文本在叠加层之上 */
+    text-align: center;
+    color: #fff;
+    /* **新增：为文字内容添加过渡和初始透明度** */
+    opacity: 1; /* 初始完全不透明 */
+    transition: opacity 2s ease-out; /* 2秒的过渡，缓出效果 */
+}
+
+/* **新增：文字内容淡出时的样式** */
+.text-content.fading-out {
+    opacity: 0; /* 完全透明 */
+}
+
+/* ==================================== */
+/*          主标题 (Glitch效果)         */
+/* ==================================== */
+.text-content h1.glitch-text {
+    font-size: 4.5em; /* 主标题大小，保持初始视觉效果 */
+    color: #fff;
+    margin-bottom: 10px;
+    text-shadow: 0 3px 10px rgba(0,0,0,.5); /* 添加文本阴影 */
+    letter-spacing: 11px; /* 增加字间距 */
+    font-weight: 700;
+    font-family: Helvetica Neue, Arial, sans-serif; /* 使用指定字体 */
+    text-transform: uppercase; /* 转换为大写（中文不明显） */
+    position: relative;
+    display: inline-block;
+    transition: text-shadow .3s;
+    overflow: hidden;
+    line-height: 1;
+}
+
+/* Glitch 效果伪元素 */
+.glitch-text::before,
+.glitch-text::after {
+    content: attr(data-text); /* 复制 h1 的文本内容 */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch-text::before {
+    left: 2px; /* 稍微向右偏移 */
+    text-shadow: -2px 0 #0ff; /* 青色阴影 */
+    animation: glitch-anim-1 2s infinite linear alternate-reverse; /* 动画 */
+}
+
+.glitch-text::after {
+    left: -2px; /* 稍微向左偏移 */
+    text-shadow: 2px 0 #f0f; /* 洋红色阴影 */
+    animation: glitch-anim-2 2s infinite linear alternate; /* 动画 */
+}
+
+/* Glitch 动画关键帧 */
+@keyframes glitch-anim-1 {
+    0% { transform: translate(0); clip-path: inset(0); }
+    10% { transform: translate(-5px, 0); clip-path: inset(70% 0 0% 0); }
+    20% { transform: translate(5px, 0); clip-path: inset(0% 0 70% 0); }
+    30% { transform: translate(-3px, 0); clip-path: inset(50% 0 20% 0); }
+    40% { transform: translate(3px, 0); clip-path: inset(10% 0 60% 0); }
+    50% { transform: translate(-2px, 0); clip-path: inset(30% 0 40% 0); }
+    60% { transform: translate(2px, 0); clip-path: inset(80% 0 0% 0); }
+    70% { transform: translate(-1px, 0); clip-path: inset(0% 0 80% 0); }
+    80% { transform: translate(1px, 0); clip-path: inset(20% 0 50% 0); }
+    90% { transform: translate(-4px, 0); clip-path: inset(40% 0 30% 0); }
+    100% { transform: translate(0); clip-path: inset(0); }
+}
+
+@keyframes glitch-anim-2 {
+    0% { transform: translate(0); clip-path: inset(0); }
+    10% { transform: translate(5px, 0); clip-path: inset(0% 0 70% 0); }
+    20% { transform: translate(-5px, 0); clip-path: inset(70% 0 0% 0); }
+    30% { transform: translate(3px, 0); clip-path: inset(20% 0 50% 0); }
+    40% { transform: translate(-3px, 0); clip-path: inset(60% 0 10% 0); }
+    50% { transform: translate(2px, 0); clip-path: inset(40% 0 30% 0); }
+    60% { transform: translate(-2px, 0); clip-path: inset(0% 0 80% 0); }
+    70% { transform: translate(1px, 0); clip-path: inset(80% 0 0% 0); }
+    80% { transform: translate(-1px, 0); clip-path: inset(50% 0 20% 0); }
+    90% { transform: translate(4px, 0); clip-path: inset(30% 0 40% 0); }
+    100% { transform: translate(0); clip-path: inset(0); }
+}
+
+/* ==================================== */
+/*            下划线和Slogan            */
+/* ==================================== */
+.title-underline {
+    width: 60px;
+    height: 4px;
+    background-color: #6a5acd;
+    margin: 0 auto 15px auto;
+    border-radius: 2px;
+}
+
+.slogan-container p {
+    font-size: 1.6em;
+    opacity: 0.9;
+}
+
+/* ==================================== */
+/*              波浪形状样式            */
+/* ==================================== */
+.wave-shape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(160, 200, 160, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+    border-top-left-radius: 50% 80px;
+    border-top-right-radius: 50% 80px;
+    transform: translateY(60%);
+    filter: blur(8px);
+    opacity: 0.7;
+}
+
+/* ==================================== */
+/*          壁纸画廊部分样式             */
+/* ==================================== */
+.wallpaper-gallery-section {
+    width: 90%; /* 与上方卡片保持一致的宽度 */
+    max-width: 1400px;
+    padding: 40px; /* 内部留白 */
+    background-color: #24262c; /* 深色背景，与导航栏背景类似 */
+    border-radius: 20px; /* 大圆角 */
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+    margin-bottom: 30px; /* 与页面底部留白 */
+    color: #fff; /* 默认文字颜色 */
+}
+
+.gallery-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.gallery-title {
+    font-size: 1.8em;
+    color: #fff;
+    position: relative;
+    padding-left: 20px; /* 为左侧的竖线留出空间 */
+    font-weight: bold;
+}
+
+.gallery-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px; /* 竖线宽度 */
+    height: 80%; /* 竖线高度 */
+    background-color: var(--color-primary); /* 使用主色 */
+    border-radius: 2px;
+}
+
+.gallery-buttons {
+    display: flex;
+    gap: 15px; /* 按钮之间的间距 */
+}
+
+/* 按钮基础样式 */
+.btn {
+    text-decoration: none;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 图标与文字间距 */
+}
+
+.btn-primary {
+    background-color: var(--color-primary);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #7a5ac0; /* 主色稍暗 */
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #b0b3b8; /* 灰色文字 */
+    border: 1px solid #4a4d55; /* 边框颜色 */
+}
+
+.btn-secondary:hover {
+    color: #fff;
+    border-color: #6a6d75;
+}
+
+
+/* ----------- 新增/修改的图片效果样式 ----------- */
+
+/* 画廊网格布局 (电脑壁纸使用) */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+    grid-gap: 25px; 
+}
+
+/* 画廊项样式 (保留并补充悬停动画) */
+.gallery-item {
+    background: #383c47; /* 调整为深色主题的卡片背景色 */
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* 调整阴影颜色以适应深色背景 */
+    transition: all 0.3s ease; /* 保持过渡效果 */
+    position: relative;
+    cursor: pointer;
+}
+
+.gallery-item:hover {
+    transform: translateY(-10px) scale(1.02); /* 悬停上移放大效果 */
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4); /* 悬停阴影加深 */
+}
+
+.gallery-item:hover .image-overlay {
+    opacity: 1; /* 悬停时显示叠加层 */
+}
+
+.image-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 比例 (9/16 * 100% = 56.25%) 电脑壁纸默认 */
+    background-color: #2c2f3a; /* 占位背景色 */
+    overflow: hidden;
+}
+
+/* 懒加载图片的模糊和过渡效果 */
+.lazy-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(20px); /* 初始模糊 */
+    transform: scale(1.1); /* 初始轻微放大 */
+    transition: filter 0.8s ease, transform 0.8s ease; /* 过渡动画 */
+}
+
+.lazy-image.loaded {
+    filter: blur(0); /* 加载后移除模糊 */
+    transform: scale(1); /* 加载后恢复正常大小 */
+}
+
+/* 图片叠加层（悬停显示标题和描述） */
+.image-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); /* 半透明叠加层 */
+    opacity: 0; /* 默认隐藏 */
+    transition: opacity 0.3s ease; /* 过渡动画 */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+    color: white;
+    z-index: 2;
+}
+
+.image-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+    transform: translateY(20px); /* 初始下移 */
+    transition: transform 0.3s ease;
+    opacity: 0; /* 初始隐藏 */
+}
+
+.image-desc {
+    font-size: 0.9rem;
+    transform: translateY(20px); /* 初始下移 */
+    transition: transform 0.3s ease;
+    opacity: 0; /* 初始隐藏 */
+    transition-delay: 0.05s; /* 延迟出现 */
+}
+
+.gallery-item:hover .image-title,
+.gallery-item:hover .image-desc {
+    transform: translateY(0); /* 悬停时恢复位置 */
+    opacity: 1; /* 悬停时显示 */
+}
+
+/* 卡片反光效果 */
+.gallery-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%); /* 调整反光效果的颜色 */
+    opacity: 0; /* 默认隐藏 */
+    transition: opacity 0.3s ease;
+    pointer-events: none; /* 确保不影响点击事件 */
+}
+
+.gallery-item:hover::after {
+    opacity: 1; /* 悬停时显示反光 */
+}
+
+
+/* --- 手机壁纸专属样式 --- */
+/* 手机壁纸的图片容器设置为9:16比例 */
+.mobile-gallery-item .image-container {
+    padding-bottom: 177.77%; /* 9:16 比例 (16/9 * 100% = 177.77%) */
+}
+
+/* 手机壁纸网格默认设置（小屏幕适用，例如2列或3列） */
+.mobile-gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* 更小的minmax，允许更多列 */
+    grid-gap: 15px; 
+}
+
+/* 媒体查询：768px 及以上显示 3 列手机壁纸 */
+@media (min-width: 768px) {
+    .mobile-gallery-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* 媒体查询：992px 及以上显示 4 列手机壁纸 */
+@media (min-width: 992px) {
+    .mobile-gallery-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* 媒体查询：1200px 及以上显示 5 列手机壁纸 */
+@media (min-width: 1200px) {
+    .mobile-gallery-grid {
+        grid-template-columns: repeat(5, 1fr); /* 强制 5 列 */
+    }
+}
+
+
+/* Lightbox Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+    animation: fadeIn 0.3s forwards; /* Add fade-in animation */
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain; /* Ensure the whole image fits */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0,0,0,0.7); /* Semi-transparent background for caption, slightly darker */
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+}
+#caption h3 {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+    color: white;
+}
+#caption p {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #a0a0a0; /* 调整描述文字颜色，更柔和 */
+}
+
+.close-button {
+    position: absolute;
+    top: 30px; /* Adjusted for better visibility */
+    right: 45px; /* Adjusted for better visibility */
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+    z-index: 1001; /* Above the image content */
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+
+@keyframes zoomIn {
+    from {transform: scale(0.8) translate(-50%, -50%);}
+    to {transform: scale(1) translate(-50%, -50%);}
+}
+
+/* Apply zoomIn animation to modal image when it appears */
+.modal.show .modal-content {
+    animation: zoomIn 0.3s forwards;
+}
+
+/* ----------- 样式应用结束 ----------- */
+
+
+/* ==================================== */
+/*             响应式调整               */
+/* ==================================== */
+@media (max-width: 1024px) {
+    .navbar {
+        padding: 0 15px; /* 调整小屏幕导航栏内边距 */
+    }
+    .navbar-nav li {
+        margin-left: 25px;
+    }
+    .text-content h1.glitch-text {
+        font-size: 3.5em;
+    }
+    .slogan-container p {
+        font-size: 1.2em;
+    }
+    .wave-shape {
+        height: 100px;
+        transform: translateY(50%);
+    }
+    .wallpaper-gallery-section {
+        padding: 30px;
+    }
+    .gallery-title {
+        font-size: 1.6em;
+    }
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85em;
+    }
+    /* 针对 gallery grid 调整 */
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        grid-gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 10px; /* 调整更小屏幕导航栏内边距 */
+        justify-content: center;
+    }
+    body { /* Adjust padding for smaller nav bar */
+        /* 根据实际导航栏高度调整，确保内容不被遮挡 */
+        padding-top: 80px; 
+    }
+    .navbar-brand {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .navbar-nav {
+        width: 100%;
+        margin-top: 10px;
+        order: 3;
+    }
+    .navbar-nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 15px;
+    }
+    .navbar-nav li {
+        margin-left: 0;
+    }
+    .navbar-right-icon {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+    }
+    .content-wrapper {
+        padding: 20px;
+    }
+    .wallpaper-card {
+        width: 95%;
+        border-radius: 15px;
+        /* 注意：如果text-content消失后，wallpaper-card下方的元素想上移，
+           需要额外处理，比如移除wallpaper-card的aspect-ratio或min-height，
+           或者将其 margin-bottom 调整为0。
+           目前，为了保持布局稳定，wallpaper-card会保留其高度。
+        */
+        margin-bottom: 20px; 
+    }
+    .text-content h1.glitch-text {
+        font-size: 2.5em;
+    }
+    .slogan-container p {
+        font-size: 1em;
+    }
+    .wave-shape {
+        height: 80px;
+        transform: translateY(40%);
+        border-top-left-radius: 40% 60px;
+        border-top-right-radius: 40% 60px;
+    }
+    .wallpaper-gallery-section {
+        padding: 20px;
+        width: 95%;
+        border-radius: 15px;
+    }
+    .gallery-header {
+        flex-direction: column; /* 标题和按钮垂直堆叠 */
+        align-items: flex-start; /* 左对齐 */
+        gap: 15px;
+    }
+    .gallery-buttons {
+        width: 100%; /* 按钮占据整个宽度 */
+        justify-content: stretch; /* 让按钮拉伸 */
+    }
+    .btn {
+        flex-grow: 1; /* 按钮平均分配宽度 */
+    }
+    /* 针对 gallery grid 调整 */
+    .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+    /* 手机壁纸的响应式调整 (max-width: 768px 意味着当前屏幕宽度小于768px时生效) */
+    .mobile-gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 保持弹性，以便在小屏幕上自动调整列数 */
+        grid-gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 10px 5px; /* 调整极小屏幕导航栏内边距 */
+    }
+    .navbar-nav a {
+        font-size: 14px;
+        padding-bottom: 3px; /* 调整小屏幕下划线距离 */
+    }
+    .navbar-nav i {
+        margin-right: 5px;
+    }
+    body {
+        padding-top: 80px; /* Keep padding for small screens */
+    }
+    .text-content h1.glitch-text {
+        font-size: 1.8em;
+    }
+    .slogan-container p {
+        font-size: 0.8em;
+    }
+    .wave-shape {
+        height: 60px;
+        transform: translateY(30%);
+        border-top-left-radius: 30% 40px;
+        border-top-right-radius: 30% 40px;
+    }
+    .wallpaper-gallery-section {
+        padding: 15px;
+    }
+    .gallery-title {
+        font-size: 1.4em;
+        padding-left: 15px;
+    }
+    .gallery-title::before {
+        height: 70%;
+    }
+    /* 针对 gallery grid 调整 */
+    .gallery-grid {
+        grid-template-columns: 1fr; /* 单列显示 */
+        grid-gap: 20px;
+    }
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.75em;
+        gap: 5px;
+    }
+    /* 手机壁纸的响应式调整 (在480px以下，可能会是2列或1列) */
+    .mobile-gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); 
+        grid-gap: 5px;
+    }
+}
